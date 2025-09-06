@@ -1,129 +1,123 @@
 import streamlit as st
-import random
-import datetime
 
-# ------------------------------
-# Page Config
-# ------------------------------
-st.set_page_config(
-    page_title="KrishiAI - Smart Agriculture Assistant",
-    page_icon="🌾🤖",
-    layout="wide"
-)
+# ------------------ PAGE CONFIG ------------------
+st.set_page_config(page_title="KrishiAI - Smart Farming App", layout="wide")
 
-# ------------------------------
-# Background Image + Animations CSS
-# ------------------------------
+# ------------------ CUSTOM CSS ------------------
 st.markdown(
     """
     <style>
     /* Background Animation */
     body {
-        background: linear-gradient(-45deg, #d4fcd6, #f0fff0, #e0ffe0, #c8f7c5);
-        background-size: 400% 400%;
-        animation: gradientBG 15s ease infinite;
+        background: linear-gradient(270deg, #e8f5e9, #f1f8e9, #e0f7fa);
+        background-size: 600% 600%;
+        animation: gradientShift 18s ease infinite;
+        font-family: 'Trebuchet MS', sans-serif;
     }
-    @keyframes gradientBG {
+
+    @keyframes gradientShift {
         0% {background-position: 0% 50%;}
         50% {background-position: 100% 50%;}
         100% {background-position: 0% 50%;}
     }
 
-    /* Main App Card */
-    .stApp {
-        background: rgba(255, 255, 255, 0.92);
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0px 4px 20px rgba(0, 100, 0, 0.2);
-    }
-
-    /* Heading Color & Animation */
-    h1, h2, h3, h4 {
-        color: #006400 !important;
-        text-shadow: 1px 1px 2px #99ff99;
-        animation: fadeIn 2s ease-in;
-    }
-    @keyframes fadeIn {
-        from {opacity: 0; transform: translateY(-20px);}
-        to {opacity: 1; transform: translateY(0);}
+    /* Headings */
+    h1, h2, h3 {
+        color: #2e7d32;
+        text-align: center;
+        font-weight: bold;
     }
 
     /* Menu Buttons */
-    .menu-button {
-        background: linear-gradient(135deg, #66cc66, #339933);
-        color: white;
-        font-weight: bold;
-        padding: 15px;
+    .stButton > button {
+        width: 100%;
+        background: #a5d6a7;
+        color: black;
+        border: none;
         border-radius: 12px;
-        text-align: center;
-        margin-bottom: 10px;
-        cursor: pointer;
-        box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+        padding: 10px;
+        font-size: 16px;
         transition: all 0.3s ease;
     }
-    .menu-button:hover {
-        background: linear-gradient(135deg, #33cc33, #228822);
-        transform: scale(1.08);
+    .stButton > button:hover {
+        background: #66bb6a;
+        color: white;
+        transform: scale(1.05);
     }
 
-    /* Text Fade-in Effect */
-    .stMarkdown, .stText, .stAlert {
-        animation: fadeIn 1.5s ease-in;
+    /* Info Box */
+    .info-box {
+        background: #f1f8e9;
+        padding: 15px;
+        border-radius: 10px;
+        border-left: 5px solid #66bb6a;
+        margin: 10px 0;
+        animation: fadeIn 1.5s ease;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(10px);}
+        to {opacity: 1; transform: translateY(0);}
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# ------------------------------
-# App Title
-# ------------------------------
-st.title("🌾🤖 KrishiAI - Smart Agriculture Assistant")
-st.subheader("Your AI Assistant for Farming, Market, Weather & Citizen Help (आपका कृषि AI सहायक)")
+# ------------------ TITLE ------------------
+st.markdown("<h1>🌱 KrishiAI - Smart Farming App</h1>", unsafe_allow_html=True)
+st.markdown("### आपकी खेती में सहायक कृत्रिम बुद्धिमत्ता (AI for Farmers)")
 
-# ------------------------------
-# AI Crop Advisory
-# ------------------------------
-def crop_advisory(soil, season):
-    if soil == "Black Soil | काली मिट्टी" and season == "Summer | गर्मी":
-        return "AI Suggestion (सुझाव): Soybean, Cotton, Maize (सोयाबीन, कपास, मक्का)"
-    elif soil == "Loamy Soil | दोमट मिट्टी" and season == "Rainy | बरसात":
-        return "AI Suggestion (सुझाव): Rice, Sugarcane, Vegetables (धान, गन्ना, सब्जियाँ)"
-    elif soil == "Sandy Soil | रेतीली मिट्टी" and season == "Winter | सर्दी":
-        return "AI Suggestion (सुझाव): Wheat, Chickpea, Mustard (गेहूँ, चना, सरसों)"
-    else:
-        return "AI Suggestion (सुझाव): Consult local agriculture expert (स्थानीय कृषि विशेषज्ञ से सलाह लें)"
+# ------------------ SIDEBAR MENU ------------------
+st.sidebar.title("📌 Menu")
+menu = st.sidebar.radio(
+    "कृपया चुनें:",
+    ["🏠 Home", "🌾 Farming Tips", "📰 Agriculture News & Events", "📊 Weather & Market Info"]
+)
 
-# ------------------------------
-# AI Pest Diagnosis
-# ------------------------------
-def pest_diagnosis(symptom):
-    symptom = symptom.lower()
-    if "yellow" in symptom or "पीले" in symptom:
-        return "AI Diagnosis (निदान): Nitrogen deficiency or Leaf Blight (नाइट्रोजन कमी / पत्ती झुलसा रोग). Apply Urea (यूरिया का छिड़काव)."
-    elif "insect" in symptom or "कीड़े" in symptom:
-        return "AI Diagnosis (निदान): Pest attack (कीट प्रकोप). Use Neem Oil or Recommended Pesticide (नीम तेल / कीटनाशक)."
-    elif "rot" in symptom or "सड़न" in symptom:
-        return "AI Diagnosis (निदान): Fungal Infection (फफूंदी संक्रमण). Apply Fungicide (फफूंदनाशक)."
-    else:
-        return "AI Diagnosis (निदान): Upload photo for precise AI analysis (सटीक निदान के लिए फोटो अपलोड करें)."
+# ------------------ HOME ------------------
+if menu == "🏠 Home":
+    st.markdown("<div class='info-box'><h2>Welcome to KrishiAI!</h2>", unsafe_allow_html=True)
+    st.write(
+        "यह एक स्मार्ट एग्रीकल्चर AI ऐप है, जो किसानों को मदद करता है "
+        "खेती, मौसम, मंडी भाव और सरकारी योजनाओं की जानकारी पाने में।"
+    )
 
-# ------------------------------
-# Market Prices
-# ------------------------------
-base_prices = {
-    "Wheat | गेहूँ": 2200,
-    "Rice | धान": 1900,
-    "Soybean | सोयाबीन": 4800,
-    "Cotton | कपास": 6200
-}
-def get_dynamic_prices():
-    prices = {}
-    for crop, base in base_prices.items():
-        fluctuation = random.randint(-100, 100)
-        prices[crop] = f"₹{base + fluctuation} / Quintal | क्विंटल"
-    return prices
+# ------------------ FARMING TIPS ------------------
+elif menu == "🌾 Farming Tips":
+    st.markdown("<h2>🌾 खेती के सुझाव</h2>", unsafe_allow_html=True)
+    tips = [
+        "समय पर बुवाई और कटाई करें।",
+        "खेत में जल निकासी का सही प्रबंध रखें।",
+        "जैविक खाद का प्रयोग बढ़ाएं।",
+        "फसल चक्र का पालन करें।",
+        "मौसम के अनुसार फसलें चुनें।"
+    ]
+    for t in tips:
+        st.markdown(f"<div class='info-box'>✅ {t}</div>", unsafe_allow_html=True)
 
-# ------------------------------
-# Weather Info
-# --------
+# ------------------ AGRICULTURE NEWS ------------------
+elif menu == "📰 Agriculture News & Events":
+    st.markdown("<h2>📰 कृषि समाचार और घटनाएँ</h2>", unsafe_allow_html=True)
+
+    # Dummy News (आप API या scraping से live data भी ला सकते हो)
+    st.markdown("<div class='info-box'>🌧️ राजस्थान में मानसून के दौरान 193 लोगों की मौत की रिपोर्ट।</div>", unsafe_allow_html=True)
+    st.markdown("<div class='info-box'>💰 PM Kisan की 21वीं किस्त नवंबर-दिसंबर 2025 में जारी होने की संभावना।</div>", unsafe_allow_html=True)
+    st.markdown("<div class='info-box'>📉 GST दरों में कमी से किसानों को राहत।</div>", unsafe_allow_html=True)
+
+    st.markdown("### 🌐 सरकारी पोर्टल्स के लिंक")
+    st.markdown("[PM Kisan Samman Nidhi](https://pmkisan.gov.in/)")
+    st.markdown("[eNAM - National Agriculture Market](https://www.enam.gov.in/)")
+    st.markdown("[कृषि मंत्रालय - भारत सरकार](https://agriwelfare.gov.in/)")
+
+# ------------------ WEATHER & MARKET INFO ------------------
+elif menu == "📊 Weather & Market Info":
+    st.markdown("<h2>📊 मौसम और मंडी जानकारी</h2>", unsafe_allow_html=True)
+
+    # Dummy Weather
+    st.markdown("<div class='info-box'>☀️ आज का मौसम: 32°C, हल्की बारिश की संभावना</div>", unsafe_allow_html=True)
+
+    # Dummy Market Prices
+    st.markdown("<div class='info-box'>🌾 गेहूँ: ₹2200 / क्विंटल</div>", unsafe_allow_html=True)
+    st.markdown("<div class='info-box'>🌽 मक्का: ₹1850 / क्विंटल</div>", unsafe_allow_html=True)
+    st.markdown("<div class='info-box'>🥥 सरसों: ₹5500 / क्विंटल</div>", unsafe_allow_html=True)
