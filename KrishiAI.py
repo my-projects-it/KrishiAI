@@ -12,136 +12,209 @@ st.set_page_config(
 )
 
 # ------------------------------
-# Language Selector
+# Language Toggle
 # ------------------------------
-st.sidebar.markdown("### 🌐 Language")
-language = st.sidebar.radio("Choose Language", ["English", "हिन्दी"])
+st.sidebar.markdown("### 🌐 Language / भाषा")
+language = st.sidebar.radio("", ["English", "हिन्दी"])
 
 # ------------------------------
-# Translation Dictionary
+# Text Dictionary
 # ------------------------------
-T = {
+TEXT = {
     "English": {
-        "app_title": "🌾🤖 KrishiAI - Smart Agriculture Assistant",
-        "welcome": "🌿 Welcome to KrishiAI",
-        "about": """
+        "home_title": "🌾 Welcome to KrishiAI",
+        "home_sub": "Your Smart Agriculture Assistant",
+        "home_info": """
         🚜 Helping Farmers & Citizens with:  
         🌱 AI-based Crop Advisory  
         🐛 Pest & Disease Diagnosis  
         💰 Market Prices  
         🌦️ Weather Information  
         📝 Citizen Problem Reporting  
-        📰 Daily Agriculture News & Events  
+        📰 Daily Agriculture News & Events
         """,
-        "menu": ["🏠 Home", "🌱 AI Crop Advisory", "🐛 AI Pest Diagnosis", 
-                 "💰 AI Market Prices", "🌦️ AI Weather Info", 
-                 "📝 AI Citizen Help", "📰 Agriculture News & Events"],
+        "menu": ["🏠 Home", "🌱 AI Crop Advisory", "🐛 AI Pest Diagnosis", "💰 AI Market Prices",
+                 "🌦️ AI Weather Info", "📝 AI Citizen Help", "📰 Agriculture News & Events"],
         "soil": "Select Soil Type",
         "season": "Select Season",
-        "symptom": "Describe Problem",
-        "problem": "Describe your problem",
-        "button_suggestion": "Get AI Suggestion",
-        "button_diagnosis": "Get AI Diagnosis",
-        "button_help": "Get AI Help",
-        "last_updated": "⏰ Last updated",
-        "helplines": "📞 Helplines: 100 (Police), 101 (Fire), 108 (Ambulance)"
+        "get_suggestion": "Get AI Suggestion",
+        "describe_problem": "Describe Problem",
+        "get_diagnosis": "Get AI Diagnosis",
+        "get_help": "Get AI Help",
+        "complaint_draft": "📄 Complaint Draft",
+        "helplines": "📞 Helplines: 100 (Police), 101 (Fire), 108 (Ambulance)",
+        "last_updated": "⏰ Last updated"
     },
     "हिन्दी": {
-        "app_title": "🌾🤖 KrishiAI - स्मार्ट कृषि सहायक",
-        "welcome": "🌿 कृषि AI में आपका स्वागत है",
-        "about": """
+        "home_title": "🌾 कृषि AI में आपका स्वागत है",
+        "home_sub": "आपका स्मार्ट कृषि सहायक",
+        "home_info": """
         🚜 किसानों और नागरिकों की मदद के लिए:  
         🌱 AI आधारित फसल सलाह  
         🐛 कीट/रोग निदान  
         💰 मंडी भाव  
         🌦️ मौसम जानकारी  
         📝 नागरिक समस्या रिपोर्टिंग  
-        📰 कृषि समाचार और घटनाएँ  
+        📰 कृषि समाचार और घटनाएँ
         """,
-        "menu": ["🏠 होम", "🌱 AI फसल सलाह", "🐛 AI कीट/रोग निदान", 
-                 "💰 AI मंडी भाव", "🌦️ AI मौसम जानकारी", 
-                 "📝 AI नागरिक सहायता", "📰 कृषि समाचार"],
+        "menu": ["🏠 होम", "🌱 AI फसल सलाह", "🐛 AI कीट/रोग निदान", "💰 AI मंडी भाव",
+                 "🌦️ AI मौसम जानकारी", "📝 AI नागरिक सहायता", "📰 कृषि समाचार"],
         "soil": "मिट्टी का प्रकार चुनें",
         "season": "मौसम चुनें",
-        "symptom": "समस्या लिखें",
-        "problem": "अपनी समस्या लिखें",
-        "button_suggestion": "AI सलाह प्राप्त करें",
-        "button_diagnosis": "AI निदान प्राप्त करें",
-        "button_help": "AI मदद प्राप्त करें",
-        "last_updated": "⏰ अंतिम अपडेट",
-        "helplines": "📞 हेल्पलाइन: 100 (पुलिस), 101 (फायर), 108 (एम्बुलेंस)"
+        "get_suggestion": "AI सलाह प्राप्त करें",
+        "describe_problem": "समस्या लिखें",
+        "get_diagnosis": "AI निदान प्राप्त करें",
+        "get_help": "AI मदद प्राप्त करें",
+        "complaint_draft": "📄 शिकायत का प्रारूप",
+        "helplines": "📞 हेल्पलाइन: 100 (पुलिस), 101 (फायर), 108 (एम्बुलेंस)",
+        "last_updated": "⏰ अंतिम अपडेट"
     }
 }
-
-txt = T[language]
+txt = TEXT[language]
 
 # ------------------------------
-# Title
+# Functions
 # ------------------------------
-st.title(txt["app_title"])
+def crop_advisory(soil, season):
+    if soil in ["Black Soil", "काली मिट्टी"] and season in ["Summer", "गर्मी"]:
+        return "Soybean, Cotton, Maize"
+    elif soil in ["Loamy Soil", "दोमट मिट्टी"] and season in ["Rainy", "बरसात"]:
+        return "Rice, Sugarcane, Vegetables"
+    elif soil in ["Sandy Soil", "रेतीली मिट्टी"] and season in ["Winter", "सर्दी"]:
+        return "Wheat, Chickpea, Mustard"
+    else:
+        return "Consult local agriculture expert"
+
+def pest_diagnosis(symptom):
+    symptom = symptom.lower()
+    if "yellow" in symptom or "पीले" in symptom:
+        return "Nitrogen deficiency or Leaf Blight"
+    elif "insect" in symptom or "कीड़े" in symptom:
+        return "Pest attack. Use Neem Oil or pesticide"
+    elif "rot" in symptom or "सड़न" in symptom:
+        return "Fungal infection. Apply fungicide"
+    else:
+        return "Upload photo for precise AI analysis"
+
+base_prices = {"Wheat | गेहूँ": 2200, "Rice | धान": 1900, "Soybean | सोयाबीन": 4800, "Cotton | कपास": 6200}
+def get_dynamic_prices():
+    prices = {}
+    for crop, base in base_prices.items():
+        fluctuation = random.randint(-100, 100)
+        prices[crop] = f"₹{base + fluctuation} / Quintal | क्विंटल"
+    return prices
+
+def get_weather():
+    conditions = ["☀️ Sunny | धूप", "🌧️ Rainy | बारिश", "⛅ Partly Cloudy | आंशिक बादल", "🌪️ Windy | तेज़ हवा"]
+    temp = random.randint(20, 40)
+    return f"{random.choice(conditions)} | Temp: {temp}°C"
+
+def classify_problem(problem):
+    problem = problem.lower()
+    if "road" in problem or "गड्ढा" in problem:
+        return "Public Works Department (PWD)"
+    elif "electricity" in problem or "बिजली" in problem:
+        return "Electricity Board"
+    elif "water" in problem or "पानी" in problem:
+        return "Jal Board"
+    elif "hospital" in problem or "health" in problem:
+        return "Health Department"
+    elif "police" in problem or "सुरक्षा" in problem:
+        return "Police Department"
+    else:
+        return "Municipal Corporation"
+
+def generate_complaint(problem, dept):
+    return f"""
+To,
+{dept}
+
+Subject: Complaint regarding public issue
+
+Respected Sir/Madam,
+Problem: {problem}
+Kindly take immediate action.
+
+धन्यवाद,
+Citizen
+"""
+
+def agriculture_news():
+    news_list = [
+        "PM Kisan 21st Installment likely in Nov-Dec 2025. [Govt Link](https://pmkisan.gov.in/)",
+        "GST rates reduced for agricultural products. [News Link](https://newsonair.gov.in/)",
+        "eNAM portal updated with new crops. [eNAM Portal](https://www.enam.gov.in/)",
+        "Weather Alert: Heavy rainfall expected. [IMD](https://mausam.imd.gov.in/)",
+        "Agri Ministry announces new subsidy for solar pumps. [Agri Ministry](https://agricoop.nic.in/)"
+    ]
+    for news in news_list:
+        st.write("📰 " + news)
 
 # ------------------------------
 # Sidebar Navigation
 # ------------------------------
-menu = st.sidebar.radio("Go to", txt["menu"])
+menu = st.sidebar.radio("📌 Navigation", txt["menu"])
 
 # ------------------------------
-# Home Page
+# Pages
 # ------------------------------
-if menu == txt["menu"][0]:
-    st.header(txt["welcome"])
-    st.markdown(txt["about"])
+if menu == txt["menu"][0]:  # Home
+    st.markdown(
+        """
+        <style>
+        .stApp {
+            background-image: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80");
+            background-size: cover;
+            background-attachment: fixed;
+            color: #003300;
+        }
+        .overlay {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 25px;
+            border-radius: 12px;
+        }
+        </style>
+        """, unsafe_allow_html=True
+    )
+    st.markdown(f"<div class='overlay'><h1>{txt['home_title']}</h1><h3>{txt['home_sub']}</h3><p>{txt['home_info']}</p></div>", unsafe_allow_html=True)
 
-# ------------------------------
-# Crop Advisory
-# ------------------------------
 elif menu == txt["menu"][1]:
     st.header(txt["menu"][1])
-    soil = st.selectbox(txt["soil"], ["Black Soil", "Loamy Soil", "Sandy Soil"])
-    season = st.selectbox(txt["season"], ["Summer", "Rainy", "Winter"])
-    if st.button(txt["button_suggestion"]):
-        st.success(f"Suggested Crops for {soil} in {season} season.")
+    soil = st.selectbox(txt["soil"], ["Black Soil | काली मिट्टी", "Loamy Soil | दोमट मिट्टी", "Sandy Soil | रेतीली मिट्टी"])
+    season = st.selectbox(txt["season"], ["Summer | गर्मी", "Rainy | बरसात", "Winter | सर्दी"])
+    if st.button(txt["get_suggestion"]):
+        st.success(crop_advisory(soil, season))
 
-# ------------------------------
-# Pest Diagnosis
-# ------------------------------
 elif menu == txt["menu"][2]:
     st.header(txt["menu"][2])
-    symptom = st.text_area(txt["symptom"])
-    if st.button(txt["button_diagnosis"]):
-        st.info(f"Diagnosis for: {symptom}")
+    symptom = st.text_area(txt["describe_problem"])
+    if st.button(txt["get_diagnosis"]):
+        st.info(pest_diagnosis(symptom))
 
-# ------------------------------
-# Market Prices
-# ------------------------------
 elif menu == txt["menu"][3]:
     st.header(txt["menu"][3])
-    st.write("👉 Wheat: ₹2200 / Quintal")
-    st.write("👉 Rice: ₹1900 / Quintal")
+    prices = get_dynamic_prices()
+    for crop, price in prices.items():
+        st.write(f"👉 {crop}: {price}")
     st.caption(f"{txt['last_updated']}: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
-# ------------------------------
-# Weather Info
-# ------------------------------
 elif menu == txt["menu"][4]:
     st.header(txt["menu"][4])
-    st.success("☀️ Sunny | Temp: 30°C")
+    st.success(get_weather())
     st.caption(f"{txt['last_updated']}: {datetime.datetime.now().strftime('%H:%M:%S')}")
 
-# ------------------------------
-# Citizen Help
-# ------------------------------
 elif menu == txt["menu"][5]:
     st.header(txt["menu"][5])
-    problem = st.text_area(txt["problem"])
-    if st.button(txt["button_help"]):
-        st.success("✅ Department Assigned: Public Works Department")
-        st.info(txt["helplines"])
+    problem = st.text_area(txt["describe_problem"])
+    if st.button(txt["get_help"]):
+        if problem.strip():
+            dept = classify_problem(problem)
+            st.success(f"✅ Responsible Department: {dept}")
+            st.text_area(txt["complaint_draft"], generate_complaint(problem, dept), height=250)
+            st.info(txt["helplines"])
+        else:
+            st.warning("⚠️ Please enter a problem")
 
-# ------------------------------
-# News & Events
-# ------------------------------
 elif menu == txt["menu"][6]:
     st.header(txt["menu"][6])
-    st.write("📰 PM Kisan 21st Installment in Nov-Dec 2025.")
-    st.write("📰 New subsidy announced for solar pumps.")
+    agriculture_news()
