@@ -163,9 +163,8 @@ if menu == txt["menu"][0]:  # Home
         """
         <style>
         .stApp {
-            background-image: url("https://images.unsplash.com/photo-1600423115367-5df9c3b7f1d7?auto=format&fit=crop&w=1600&q=80");
+            background-image: url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80");
             background-size: cover;
-            background-position: center;
             background-attachment: fixed;
             color: #003300;
         }
