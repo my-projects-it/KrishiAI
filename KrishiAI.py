@@ -185,4 +185,3 @@ elif menu == "AI Citizen Help | नागरिक सहायता":
             complaint = generate_complaint(problem, dept)
             st.text_area("📄 Complaint Draft (शिकायत पत्र)", complaint, height=250)
             st.info("📞 Important Helplines: 100 (Police), 101 (Fire), 108 (Ambulance)")
-streamlit run krishi_ai_app.py
