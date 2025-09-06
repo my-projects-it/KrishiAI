@@ -8,7 +8,7 @@ st.markdown(
     """
     <style>
     /* Background Animation */
-    body {
+    html, .stApp {
         background: linear-gradient(270deg, #e8f5e9, #f1f8e9, #e0f7fa);
         background-size: 600% 600%;
         animation: gradientShift 18s ease infinite;
@@ -77,7 +77,7 @@ menu = st.sidebar.radio(
 
 # ------------------ HOME ------------------
 if menu == "🏠 Home":
-    st.markdown("<div class='info-box'><h2>Welcome to KrishiAI!</h2>", unsafe_allow_html=True)
+    st.markdown("<div class='info-box'><h2>Welcome to KrishiAI!</h2></div>", unsafe_allow_html=True)
     st.write(
         "यह एक स्मार्ट एग्रीकल्चर AI ऐप है, जो किसानों को मदद करता है "
         "खेती, मौसम, मंडी भाव और सरकारी योजनाओं की जानकारी पाने में।"
@@ -100,7 +100,6 @@ elif menu == "🌾 Farming Tips":
 elif menu == "📰 Agriculture News & Events":
     st.markdown("<h2>📰 कृषि समाचार और घटनाएँ</h2>", unsafe_allow_html=True)
 
-    # Dummy News (आप API या scraping से live data भी ला सकते हो)
     st.markdown("<div class='info-box'>🌧️ राजस्थान में मानसून के दौरान 193 लोगों की मौत की रिपोर्ट।</div>", unsafe_allow_html=True)
     st.markdown("<div class='info-box'>💰 PM Kisan की 21वीं किस्त नवंबर-दिसंबर 2025 में जारी होने की संभावना।</div>", unsafe_allow_html=True)
     st.markdown("<div class='info-box'>📉 GST दरों में कमी से किसानों को राहत।</div>", unsafe_allow_html=True)
@@ -114,10 +113,7 @@ elif menu == "📰 Agriculture News & Events":
 elif menu == "📊 Weather & Market Info":
     st.markdown("<h2>📊 मौसम और मंडी जानकारी</h2>", unsafe_allow_html=True)
 
-    # Dummy Weather
     st.markdown("<div class='info-box'>☀️ आज का मौसम: 32°C, हल्की बारिश की संभावना</div>", unsafe_allow_html=True)
-
-    # Dummy Market Prices
     st.markdown("<div class='info-box'>🌾 गेहूँ: ₹2200 / क्विंटल</div>", unsafe_allow_html=True)
     st.markdown("<div class='info-box'>🌽 मक्का: ₹1850 / क्विंटल</div>", unsafe_allow_html=True)
     st.markdown("<div class='info-box'>🥥 सरसों: ₹5500 / क्विंटल</div>", unsafe_allow_html=True)
