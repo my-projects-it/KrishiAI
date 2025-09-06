@@ -1,119 +1,231 @@
 import streamlit as st
+import random
+import datetime
 
-# ------------------ PAGE CONFIG ------------------
-st.set_page_config(page_title="KrishiAI - Smart Farming App", layout="wide")
+# ------------------------------
+# Page Config
+# ------------------------------
+st.set_page_config(
+    page_title="KrishiAI - Smart Agriculture Assistant",
+    page_icon="🌾🤖",
+    layout="wide"
+)
 
-# ------------------ CUSTOM CSS ------------------
+# ------------------------------
+# Background Image + CSS
+# ------------------------------
 st.markdown(
     """
     <style>
-    /* Background Animation */
-    html, .stApp {
-        background: linear-gradient(270deg, #e8f5e9, #f1f8e9, #e0f7fa);
-        background-size: 600% 600%;
-        animation: gradientShift 18s ease infinite;
-        font-family: 'Trebuchet MS', sans-serif;
+    body {
+        background-image: url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1600&q=80");
+        background-size: cover;
+        background-attachment: fixed;
+        color: #004d00;
     }
-
-    @keyframes gradientShift {
-        0% {background-position: 0% 50%;}
-        50% {background-position: 100% 50%;}
-        100% {background-position: 0% 50%;}
+    .stApp {
+        background: rgba(255, 255, 255, 0.88);
+        padding: 20px;
+        border-radius: 10px;
     }
-
-    /* Headings */
-    h1, h2, h3 {
-        color: #2e7d32;
-        text-align: center;
+    h1, h2, h3, h4 {
+        color: #006600;
+    }
+    .menu-button {
+        background-color: #66cc66;
+        color: white;
         font-weight: bold;
-    }
-
-    /* Menu Buttons */
-    .stButton > button {
-        width: 100%;
-        background: #a5d6a7;
-        color: black;
-        border: none;
+        padding: 15px;
         border-radius: 12px;
-        padding: 10px;
-        font-size: 16px;
+        text-align: center;
+        margin-bottom: 10px;
+        cursor: pointer;
+        box-shadow: 2px 2px 5px grey;
         transition: all 0.3s ease;
     }
-    .stButton > button:hover {
-        background: #66bb6a;
-        color: white;
+    .menu-button:hover {
+        background-color: #339933;
         transform: scale(1.05);
-    }
-
-    /* Info Box */
-    .info-box {
-        background: #f1f8e9;
-        padding: 15px;
-        border-radius: 10px;
-        border-left: 5px solid #66bb6a;
-        margin: 10px 0;
-        animation: fadeIn 1.5s ease;
-    }
-
-    @keyframes fadeIn {
-        from {opacity: 0; transform: translateY(10px);}
-        to {opacity: 1; transform: translateY(0);}
     }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# ------------------ TITLE ------------------
-st.markdown("<h1>🌱 KrishiAI - Smart Farming App</h1>", unsafe_allow_html=True)
-st.markdown("### आपकी खेती में सहायक कृत्रिम बुद्धिमत्ता (AI for Farmers)")
+# ------------------------------
+# App Title
+# ------------------------------
+st.title("🌾🤖 KrishiAI - Smart Agriculture Assistant")
+st.subheader("Your AI Assistant for Farming, Market, Weather & Citizen Help (आपका कृषि AI सहायक)")
 
-# ------------------ SIDEBAR MENU ------------------
-st.sidebar.title("📌 Menu")
+# ------------------------------
+# Functions
+# ------------------------------
+def crop_advisory(soil, season):
+    if soil == "Black Soil | काली मिट्टी" and season == "Summer | गर्मी":
+        return "AI Suggestion (सुझाव): Soybean, Cotton, Maize (सोयाबीन, कपास, मक्का)"
+    elif soil == "Loamy Soil | दोमट मिट्टी" and season == "Rainy | बरसात":
+        return "AI Suggestion (सुझाव): Rice, Sugarcane, Vegetables (धान, गन्ना, सब्जियाँ)"
+    elif soil == "Sandy Soil | रेतीली मिट्टी" and season == "Winter | सर्दी":
+        return "AI Suggestion (सुझाव): Wheat, Chickpea, Mustard (गेहूँ, चना, सरसों)"
+    else:
+        return "AI Suggestion (सुझाव): Consult local agriculture expert (स्थानीय कृषि विशेषज्ञ से सलाह लें)"
+
+def pest_diagnosis(symptom):
+    symptom = symptom.lower()
+    if "yellow" in symptom or "पीले" in symptom:
+        return "AI Diagnosis (निदान): Nitrogen deficiency or Leaf Blight. Apply Urea."
+    elif "insect" in symptom or "कीड़े" in symptom:
+        return "AI Diagnosis (निदान): Pest attack. Use Neem Oil or Recommended Pesticide."
+    elif "rot" in symptom or "सड़न" in symptom:
+        return "AI Diagnosis (निदान): Fungal Infection. Apply Fungicide."
+    else:
+        return "AI Diagnosis (निदान): Upload photo for precise AI analysis."
+
+base_prices = {
+    "Wheat | गेहूँ": 2200,
+    "Rice | धान": 1900,
+    "Soybean | सोयाबीन": 4800,
+    "Cotton | कपास": 6200
+}
+def get_dynamic_prices():
+    prices = {}
+    for crop, base in base_prices.items():
+        fluctuation = random.randint(-100, 100)
+        prices[crop] = f"₹{base + fluctuation} / Quintal | क्विंटल"
+    return prices
+
+def get_weather():
+    conditions = ["☀️ Sunny | धूप", "🌧️ Rainy | बारिश", "⛅ Partly Cloudy | आंशिक बादल", "🌪️ Windy | तेज़ हवा"]
+    temp = random.randint(20, 40)
+    condition = random.choice(conditions)
+    return f"{condition} | Temp: {temp}°C | तापमान: {temp}°C"
+
+def classify_problem(problem):
+    problem = problem.lower()
+    if "road" in problem or "गड्ढा" in problem:
+        return "Public Works Department (PWD) | लोक निर्माण विभाग"
+    elif "electricity" in problem or "बिजली" in problem:
+        return "Electricity Board | विद्युत विभाग"
+    elif "water" in problem or "पानी" in problem:
+        return "Jal Board | जल विभाग"
+    elif "hospital" in problem or "health" in problem or "अस्पताल" in problem:
+        return "Health Department | स्वास्थ्य विभाग"
+    elif "police" in problem or "सुरक्षा" in problem:
+        return "Police Department | पुलिस विभाग"
+    else:
+        return "Municipal Corporation | नगर निगम"
+
+def generate_complaint(problem, dept):
+    return f"""
+To,
+{dept}
+
+Subject: Complaint regarding public issue
+
+Respected Sir/Madam,
+Problem: {problem}
+I request you to kindly take immediate action.
+
+धन्यवाद,
+Citizen
+"""
+
+def agriculture_news():
+    news_list = [
+        "PM Kisan 21st Installment likely in Nov-Dec 2025. [Govt Link](https://pmkisan.gov.in/)",
+        "GST rates reduced for agricultural products. [News Link](https://newsonair.gov.in/)",
+        "eNAM portal updated with new crops. [eNAM Portal](https://www.enam.gov.in/)",
+        "Weather Alert: Heavy rainfall expected. [IMD](https://mausam.imd.gov.in/)",
+        "Agri Ministry announces new subsidy for solar pumps. [Agri Ministry](https://agricoop.nic.in/)"
+    ]
+    for news in news_list:
+        st.write("📰 " + news)
+
+# ------------------------------
+# Menu Selection
+# ------------------------------
+st.sidebar.title("📌 Navigation (नेविगेशन)")
 menu = st.sidebar.radio(
-    "कृपया चुनें:",
-    ["🏠 Home", "🌾 Farming Tips", "📰 Agriculture News & Events", "📊 Weather & Market Info"]
+    "Go to (जाएँ)", 
+    ["🏠 Home | होम", "🌱 AI Crop Advisory", "🐛 AI Pest Diagnosis", "💰 AI Market Prices", 
+     "🌦️ AI Weather Info", "📝 AI Citizen Help", "📰 Agriculture News & Events"]
 )
 
-# ------------------ HOME ------------------
-if menu == "🏠 Home":
-    st.markdown("<div class='info-box'><h2>Welcome to KrishiAI!</h2></div>", unsafe_allow_html=True)
-    st.write(
-        "यह एक स्मार्ट एग्रीकल्चर AI ऐप है, जो किसानों को मदद करता है "
-        "खेती, मौसम, मंडी भाव और सरकारी योजनाओं की जानकारी पाने में।"
-    )
+# ------------------------------
+# Home Page
+# ------------------------------
+if menu == "🏠 Home | होम":
+    st.header("🌿 Welcome to KrishiAI (कृषि AI में आपका स्वागत है)")
+    st.markdown("""
+    ### 🚜 About the App | ऐप के बारे में  
+    KrishiAI is your **Smart Agriculture Assistant** to help farmers & citizens with:  
+    - 🌱 AI-based Crop Advisory  
+    - 🐛 Pest & Disease Diagnosis  
+    - 💰 Market Prices (मंडी भाव)  
+    - 🌦️ Weather Information  
+    - 📝 Citizen Problem Reporting  
+    - 📰 Daily Agriculture News & Events  
 
-# ------------------ FARMING TIPS ------------------
-elif menu == "🌾 Farming Tips":
-    st.markdown("<h2>🌾 खेती के सुझाव</h2>", unsafe_allow_html=True)
-    tips = [
-        "समय पर बुवाई और कटाई करें।",
-        "खेत में जल निकासी का सही प्रबंध रखें।",
-        "जैविक खाद का प्रयोग बढ़ाएं।",
-        "फसल चक्र का पालन करें।",
-        "मौसम के अनुसार फसलें चुनें।"
-    ]
-    for t in tips:
-        st.markdown(f"<div class='info-box'>✅ {t}</div>", unsafe_allow_html=True)
+    ---
+    👉 Select features from the **left menu** to explore (बाएँ मेन्यू से फीचर चुनें).
+    """)
 
-# ------------------ AGRICULTURE NEWS ------------------
+# ------------------------------
+# Crop Advisory
+# ------------------------------
+elif menu == "🌱 AI Crop Advisory":
+    st.header("🌱 AI Crop Suggestion (फसल सलाह)")
+    soil = st.selectbox("Select Soil Type", ["Black Soil | काली मिट्टी", "Loamy Soil | दोमट मिट्टी", "Sandy Soil | रेतीली मिट्टी"])
+    season = st.selectbox("Select Season", ["Summer | गर्मी", "Rainy | बरसात", "Winter | सर्दी"])
+    if st.button("Get AI Suggestion"):
+        st.success(crop_advisory(soil, season))
+
+# ------------------------------
+# Pest Diagnosis
+# ------------------------------
+elif menu == "🐛 AI Pest Diagnosis":
+    st.header("🐛 AI Pest & Disease Diagnosis (कीट/रोग निदान)")
+    symptom = st.text_area("Describe Problem")
+    if st.button("Get AI Diagnosis"):
+        st.info(pest_diagnosis(symptom))
+
+# ------------------------------
+# Market Prices
+# ------------------------------
+elif menu == "💰 AI Market Prices":
+    st.header("💰 AI Powered Market Prices (मंडी भाव)")
+    prices = get_dynamic_prices()
+    for crop, price in prices.items():
+        st.write(f"👉 {crop}: {price}")
+    st.caption(f"⏰ Last updated: {datetime.datetime.now().strftime('%H:%M:%S')}")
+
+# ------------------------------
+# Weather Info
+# ------------------------------
+elif menu == "🌦️ AI Weather Info":
+    st.header("🌦️ AI Weather Update (मौसम जानकारी)")
+    st.success(get_weather())
+    st.caption(f"⏰ Last updated: {datetime.datetime.now().strftime('%H:%M:%S')}")
+
+# ------------------------------
+# Citizen Help
+# ------------------------------
+elif menu == "📝 AI Citizen Help":
+    st.header("📝 AI Citizen Problem Reporting (नागरिक शिकायत)")
+    problem = st.text_area("Describe your problem")
+    if st.button("Get AI Help"):
+        if problem.strip() == "":
+            st.warning("Please enter a problem")
+        else:
+            dept = classify_problem(problem)
+            st.success(f"✅ Responsible Department: {dept}")
+            st.text_area("📄 Complaint Draft", generate_complaint(problem, dept), height=250)
+            st.info("📞 Helplines: 100 (Police), 101 (Fire), 108 (Ambulance)")
+
+# ------------------------------
+# News & Events
+# ------------------------------
 elif menu == "📰 Agriculture News & Events":
-    st.markdown("<h2>📰 कृषि समाचार और घटनाएँ</h2>", unsafe_allow_html=True)
-
-    st.markdown("<div class='info-box'>🌧️ राजस्थान में मानसून के दौरान 193 लोगों की मौत की रिपोर्ट।</div>", unsafe_allow_html=True)
-    st.markdown("<div class='info-box'>💰 PM Kisan की 21वीं किस्त नवंबर-दिसंबर 2025 में जारी होने की संभावना।</div>", unsafe_allow_html=True)
-    st.markdown("<div class='info-box'>📉 GST दरों में कमी से किसानों को राहत।</div>", unsafe_allow_html=True)
-
-    st.markdown("### 🌐 सरकारी पोर्टल्स के लिंक")
-    st.markdown("[PM Kisan Samman Nidhi](https://pmkisan.gov.in/)")
-    st.markdown("[eNAM - National Agriculture Market](https://www.enam.gov.in/)")
-    st.markdown("[कृषि मंत्रालय - भारत सरकार](https://agriwelfare.gov.in/)")
-
-# ------------------ WEATHER & MARKET INFO ------------------
-elif menu == "📊 Weather & Market Info":
-    st.markdown("<h2>📊 मौसम और मंडी जानकारी</h2>", unsafe_allow_html=True)
-
-    st.markdown("<div class='info-box'>☀️ आज का मौसम: 32°C, हल्की बारिश की संभावना</div>", unsafe_allow_html=True)
-    st.markdown("<div class='info-box'>🌾 गेहूँ: ₹2200 / क्विंटल</div>", unsafe_allow_html=True)
-    st.markdown("<div class='info-box'>🌽 मक्का: ₹1850 / क्विंटल</div>", unsafe_allow_html=True)
-    st.markdown("<div class='info-box'>🥥 सरसों: ₹5500 / क्विंटल</div>", unsafe_allow_html=True)
+    st.header("📰 Agriculture News & Events (कृषि समाचार)")
+    agriculture_news()
