@@ -102,7 +102,7 @@ def get_dynamic_prices():
     for crop, base in base_prices.items():
         fluctuation = random.randint(-100, 100)
         prices[crop] = f"₹{base + fluctuation} / Quintal | क्विंटल"
-        return prices
+    return prices
 
 def get_weather():
     conditions = ["☀️ Sunny | धूप", "🌧️ Rainy | बारिश", "⛅ Partly Cloudy | आंशिक बादल", "🌪️ Windy | तेज़ हवा"]
@@ -163,7 +163,7 @@ if menu == txt["menu"][0]:  # Home
         """
         <style>
         .stApp {
-            background-image: url("https://upload.wikimedia.org/wikipedia/commons/6/65/Indian_farmer_in_field.jpg");
+            background-image: url("https://images.unsplash.com/photo-1600423115367-5df9c3b7f1d7?auto=format&fit=crop&w=1600&q=80");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
