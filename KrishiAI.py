@@ -8,7 +8,8 @@ import datetime
 st.set_page_config(
     page_title="KrishiAI - Smart Agriculture Assistant",
     page_icon="🌾",
-    layout="wide"
+    layout="wide", 
+    color="green"
 )
 
 # ------------------------------
