@@ -76,25 +76,54 @@ txt = TEXT[language]
 # Functions
 # ------------------------------
 def crop_advisory(soil, season):
-    if soil in ["Black Soil", "काली मिट्टी"] and season in ["Summer", "गर्मी"]:
-        return "Soybean, Cotton, Maize"
-    elif soil in ["Loamy Soil", "दोमट मिट्टी"] and season in ["Rainy", "बरसात"]:
-        return "Rice, Sugarcane, Vegetables"
-    elif soil in ["Sandy Soil", "रेतीली मिट्टी"] and season in ["Winter", "सर्दी"]:
-        return "Wheat, Chickpea, Mustard"
+    soil = soil.lower()
+    season = season.lower()
+
+    suggestions = []
+    if "black" in soil or "काली" in soil:
+        if "summer" in season or "गर्मी" in season:
+            suggestions = ["Soybean 🌱", "Cotton 👕", "Maize 🌽"]
+        elif "rainy" in season or "बरसात" in season:
+            suggestions = ["Pulses 🫘", "Groundnut 🥜", "Millets 🌾"]
+        else:
+            suggestions = ["Wheat 🌾", "Chickpea 🟤", "Mustard 🌼"]
+
+    elif "loamy" in soil or "दोमट" in soil:
+        if "rainy" in season or "बरसात" in season:
+            suggestions = ["Rice 🍚", "Sugarcane 🍭", "Vegetables 🥬"]
+        else:
+            suggestions = ["Potato 🥔", "Onion 🧅", "Tomato 🍅"]
+
+    elif "sandy" in soil or "रेतीली" in soil:
+        if "winter" in season or "सर्दी" in season:
+            suggestions = ["Wheat 🌾", "Mustard 🌼", "Chickpea 🟤"]
+        else:
+            suggestions = ["Groundnut 🥜", "Bajra 🌾", "Castor 🌱"]
+
+    if suggestions:
+        return f"✅ Recommended Crops: {', '.join(suggestions)}\n\n💡 Tip: Rotate crops yearly to improve soil fertility and reduce pest attack."
     else:
-        return "Consult local agriculture expert"
+        return "⚠️ No direct match found. Please consult local Krishi Vigyan Kendra."
 
 def pest_diagnosis(symptom):
     symptom = symptom.lower()
+    if not symptom.strip():
+        return "⚠️ Please describe symptoms or upload an image for better diagnosis."
+
     if "yellow" in symptom or "पीले" in symptom:
-        return "Nitrogen deficiency or Leaf Blight"
-    elif "insect" in symptom or "कीड़े" in symptom:
-        return "Pest attack. Use Neem Oil or pesticide"
+        return "🔎 Likely Cause: Nitrogen deficiency or Leaf Blight\n💡 Solution: Spray Urea (2%) foliar spray and ensure balanced fertilizer use."
+
+    elif "hole" in symptom or "छेद" in symptom:
+        return "🔎 Likely Cause: Stem borer or Leaf-eating caterpillar\n💡 Solution: Use pheromone traps, spray Neem oil (5 ml/L) or recommended pesticide."
+
     elif "rot" in symptom or "सड़न" in symptom:
-        return "Fungal infection. Apply fungicide"
+        return "🔎 Likely Cause: Fungal infection (Root/Stem rot)\n💡 Solution: Treat seeds with fungicide before sowing and apply Copper oxychloride spray."
+
+    elif "insect" in symptom or "कीड़े" in symptom:
+        return "🔎 Likely Cause: General pest attack\n💡 Solution: Identify pest, use light traps, and adopt IPM (Integrated Pest Management)."
+
     else:
-        return "Upload photo for precise AI analysis"
+        return "📷 Please upload a photo for precise AI-based image diagnosis or contact nearest agriculture officer."
 
 base_prices = {"Wheat | गेहूँ": 2200, "Rice | धान": 1900, "Soybean | सोयाबीन": 4800, "Cotton | कपास": 6200}
 def get_dynamic_prices():
